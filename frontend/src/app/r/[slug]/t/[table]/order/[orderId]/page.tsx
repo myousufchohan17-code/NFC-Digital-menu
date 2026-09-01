@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
+import type { OrderItem } from "@prisma/client";
 import { prisma } from "@backend/lib/prisma";
 import { formatMoney, isCustomerEditable, STATUS_LABELS, type OrderStatus } from "@/lib/utils";
 
@@ -76,7 +77,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
           </div>
 
           <ul className="mt-6 space-y-3 border-t border-[#1f1f1f] pt-4">
-            {order.items.map((item) => (
+            {order.items.map((item: OrderItem) => (
               <li key={item.id} className="flex justify-between gap-3 text-sm">
                 <span>
                   <span className="font-medium text-[#f0c14b]">{item.quantity}×</span> {item.itemName}

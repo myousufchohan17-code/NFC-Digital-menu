@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { connection } from "next/server";
+import type { MenuCategory, MenuItem, OrderItem } from "@prisma/client";
 import { prisma } from "@backend/lib/prisma";
 import { parseJsonObject } from "@/lib/utils";
 import { CustomerMenu } from "@/components/CustomerMenu";
@@ -72,7 +73,7 @@ export default async function TableMenuPage({ params }: Props) {
         status: activeOrder.status,
         total: activeOrder.total,
         createdAt: activeOrder.createdAt.toISOString(),
-        items: activeOrder.items.map((item) => ({
+        items: activeOrder.items.map((item: OrderItem) => ({
           id: item.id,
           menuItemId: item.menuItemId,
           itemName: item.itemName,
@@ -99,10 +100,10 @@ export default async function TableMenuPage({ params }: Props) {
           openingHours: parseJsonObject(restaurant.openingHours),
           socialLinks: parseJsonObject(restaurant.socialLinks),
         }}
-        categories={restaurant.categories.map((c) => ({
+        categories={restaurant.categories.map((c: MenuCategory & { items: MenuItem[] }) => ({
           id: c.id,
           name: c.name,
-          items: c.items.map((i) => ({
+          items: c.items.map((i: MenuItem) => ({
             id: i.id,
             name: i.name,
             description: i.description,
