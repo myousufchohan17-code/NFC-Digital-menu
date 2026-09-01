@@ -2,25 +2,22 @@
   "name": "restaurantorder",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.3.0",
-    "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "dev": "concurrently -n frontend,backend -c cyan,magenta \"npm run dev --workspace=frontend\" \"npm run dev --workspace=backend\"",
+    "build": "npm run build --workspace=backend && npm run build --workspace=frontend",
+    "start": "concurrently -n frontend,backend -c cyan,magenta \"npm run start --workspace=frontend\" \"npm run start --workspace=backend\"",
+    "lint": "npm run lint --workspace=frontend",
+    "db:push": "npm run db:push --workspace=backend",
+    "db:seed": "npm run db:seed --workspace=backend",
+    "db:studio": "npm run db:studio --workspace=backend",
+    "db:reset": "npm run db:reset --workspace=backend"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.0",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "concurrently": "^9.1.2",
+    "dotenv-cli": "^8.0.0"
   }
 }
